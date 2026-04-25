@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EFL Season 1 | Official Portal</title>
+    <title>EFL Season 1 | Official Standings</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
@@ -11,44 +11,42 @@
     <header>
         <img src="1000059186.png" alt="EFL Logo" class="logo">
         <h1 class="gold-text">ELITE FOOTBALL LEAGUE</h1>
-        <div class="admin-zone">
-            <button id="adminToggle" onclick="unlockAdmin()">Admin Login</button>
-        </div>
+        <button id="adminToggle" onclick="unlockAdmin()">Admin Login</button>
     </header>
 
     <main class="container">
         <section class="card" id="captureArea">
             <div class="card-header">
                 <h2>LEAGUE STANDINGS</h2>
-                <button id="downloadBtn" onclick="downloadTable()">Download Table</button>
+                <button id="downloadBtn" onclick="downloadTable()">Download PNG</button>
             </div>
-            <div class="table-wrapper">
-                <table id="mainTable">
+            
+            <div class="table-scroll-wrapper">
+                <table>
                     <thead>
                         <tr>
-                            <th>Pos</th>
-                            <th class="text-left">Player</th>
-                            <th>P</th>
-                            <th>W</th>
-                            <th>D</th>
-                            <th>L</th>
-                            <th>GF</th>
-                            <th>GA</th>
-                            <th>GD</th>
-                            <th class="gold-pts">Pts</th>
+                            <th class="col-rank">#</th>
+                            <th class="col-name text-left">Player</th>
+                            <th class="col-stat">P</th>
+                            <th class="col-stat">W</th>
+                            <th class="col-stat">D</th>
+                            <th class="col-stat">L</th>
+                            <th class="col-stat">GF</th>
+                            <th class="col-stat">GA</th>
+                            <th class="col-stat">GD</th>
+                            <th class="col-stat gold-pts">Pts</th>
                         </tr>
                     </thead>
-                    <tbody id="tableBody">
-                        </tbody>
+                    <tbody id="tableBody"></tbody>
                 </table>
             </div>
+            <p class="swipe-hint">← Swipe table to see all stats →</p>
         </section>
 
         <section class="card">
             <h2>FIXTURES & RESULTS</h2>
-            <div id="fixtureContainer">
-                </div>
-            <button id="saveBtn" class="hidden" onclick="saveData()">SAVE & UPDATE ALL DEVICES</button>
+            <div id="fixtureContainer"></div>
+            <button id="saveBtn" class="hidden" onclick="saveData()">SAVE ALL RESULTS</button>
         </section>
     </main>
 
