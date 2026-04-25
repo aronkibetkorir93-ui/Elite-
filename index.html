@@ -3,40 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EFL Season 1 | Elite League</title>
+    <title>EFL Season 1 | Official Portal</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
     <header>
-        <img src="https://i.postimg.cc/mD86fL9D/1775293871024.png" alt="EFL Logo" class="logo">
+        <img src="1000059186.png" alt="EFL Logo" class="logo">
         <h1 class="gold-text">ELITE FOOTBALL LEAGUE</h1>
-        <p>Official Season 1 Standings</p>
-        <button id="adminToggle" onclick="unlockAdmin()">Admin Login</button>
+        <div class="admin-zone">
+            <button id="adminToggle" onclick="unlockAdmin()">Admin Login</button>
+        </div>
     </header>
 
     <main class="container">
-        <section class="card">
-            <h2>League Table</h2>
+        <section class="card" id="captureArea">
+            <div class="card-header">
+                <h2>LEAGUE STANDINGS</h2>
+                <button id="downloadBtn" onclick="downloadTable()">Download Table</button>
+            </div>
             <div class="table-wrapper">
-                <table>
+                <table id="mainTable">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Player</th>
+                            <th>Pos</th>
+                            <th class="text-left">Player</th>
                             <th>P</th>
+                            <th>W</th>
+                            <th>D</th>
+                            <th>L</th>
+                            <th>GF</th>
+                            <th>GA</th>
                             <th>GD</th>
-                            <th>Pts</th>
+                            <th class="gold-pts">Pts</th>
                         </tr>
                     </thead>
-                    <tbody id="tableBody"></tbody>
+                    <tbody id="tableBody">
+                        </tbody>
                 </table>
             </div>
         </section>
 
         <section class="card">
-            <h2>All Fixtures (7 Rounds)</h2>
-            <div id="fixtureContainer"></div>
-            <button id="saveBtn" class="hidden" onclick="saveData()">Update Live Results</button>
+            <h2>FIXTURES & RESULTS</h2>
+            <div id="fixtureContainer">
+                </div>
+            <button id="saveBtn" class="hidden" onclick="saveData()">SAVE & UPDATE ALL DEVICES</button>
         </section>
     </main>
 
