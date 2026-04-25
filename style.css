@@ -1,0 +1,19 @@
+:root { --navy: #0a192f; --gold: #d4af37; --dark: #020617; --white: #ffffff; }
+body { background: var(--dark); color: var(--white); font-family: sans-serif; margin: 0; padding: 15px; }
+header { text-align: center; padding: 20px 0; }
+.logo { width: 100px; border-radius: 50%; border: 2px solid var(--gold); }
+.gold-text { color: var(--gold); letter-spacing: 1px; margin: 10px 0 0 0; }
+.container { max-width: 900px; margin: auto; }
+.card { background: var(--navy); border-radius: 12px; padding: 15px; margin-bottom: 20px; border: 1px solid #1e293b; }
+h2 { font-size: 1.2rem; border-bottom: 1px solid var(--gold); padding-bottom: 10px; color: var(--gold); }
+.table-wrapper { overflow-x: auto; }
+table { width: 100%; text-align: left; border-collapse: collapse; }
+th, td { padding: 12px 8px; border-bottom: 1px solid #1e293b; }
+.round-header { background: #162a4a; padding: 8px; font-weight: bold; font-size: 0.9rem; margin-top: 15px; border-left: 4px solid var(--gold); }
+.match { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dotted #334155; }
+.match span { width: 40%; font-size: 0.9rem; }
+.match .score-inputs { width: 20%; display: flex; justify-content: center; gap: 5px; }
+input { width: 30px; background: #000; color: var(--gold); border: 1px solid var(--gold); text-align: center; border-radius: 4px; }
+.hidden { display: none; }
+#saveBtn { width: 100%; padding: 15px; background: var(--gold); color: var(--navy); font-weight: bold; border: none; border-radius: 8px; margin-top: 20px; cursor: pointer; }
+#adminToggle { background: none; color: #475569; border: none; font-size: 0.7rem; cursor: pointer; }
