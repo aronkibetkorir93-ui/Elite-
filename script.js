@@ -1,36 +1,31 @@
 const players = ["Kibet Aron", "Bralyn Kipkirui", "Manu Kheed", "Lino", "Holyplug", "Manu Josh", "Blamek", "Ian Too"];
+const ADMIN_PASSWORD = "EliteAdmin2026";
+
 let fixtures = [
-    // ROUND 1
     { r: 1, p1: "Kibet Aron", p2: "Ian Too", s1: null, s2: null },
     { r: 1, p1: "Bralyn Kipkirui", p2: "Blamek", s1: null, s2: null },
     { r: 1, p1: "Manu Kheed", p2: "Manu Josh", s1: null, s2: null },
     { r: 1, p1: "Lino", p2: "Holyplug", s1: null, s2: null },
-    // ROUND 2
     { r: 2, p1: "Ian Too", p2: "Holyplug", s1: null, s2: null },
     { r: 2, p1: "Manu Josh", p2: "Lino", s1: null, s2: null },
     { r: 2, p1: "Blamek", p2: "Manu Kheed", s1: null, s2: null },
     { r: 2, p1: "Kibet Aron", p2: "Bralyn Kipkirui", s1: null, s2: null },
-    // ROUND 3
     { r: 3, p1: "Bralyn Kipkirui", p2: "Ian Too", s1: null, s2: null },
     { r: 3, p1: "Manu Kheed", p2: "Kibet Aron", s1: null, s2: null },
     { r: 3, p1: "Lino", p2: "Blamek", s1: null, s2: null },
     { r: 3, p1: "Holyplug", p2: "Manu Josh", s1: null, s2: null },
-    // ROUND 4
     { r: 4, p1: "Ian Too", p2: "Manu Josh", s1: null, s2: null },
     { r: 4, p1: "Blamek", p2: "Holyplug", s1: null, s2: null },
     { r: 4, p1: "Kibet Aron", p2: "Lino", s1: null, s2: null },
     { r: 4, p1: "Bralyn Kipkirui", p2: "Manu Kheed", s1: null, s2: null },
-    // ROUND 5
     { r: 5, p1: "Manu Kheed", p2: "Ian Too", s1: null, s2: null },
     { r: 5, p1: "Lino", p2: "Bralyn Kipkirui", s1: null, s2: null },
     { r: 5, p1: "Holyplug", p2: "Kibet Aron", s1: null, s2: null },
     { r: 5, p1: "Manu Josh", p2: "Blamek", s1: null, s2: null },
-    // ROUND 6
     { r: 6, p1: "Ian Too", p2: "Blamek", s1: null, s2: null },
     { r: 6, p1: "Kibet Aron", p2: "Manu Josh", s1: null, s2: null },
     { r: 6, p1: "Bralyn Kipkirui", p2: "Holyplug", s1: null, s2: null },
     { r: 6, p1: "Manu Kheed", p2: "Lino", s1: null, s2: null },
-    // ROUND 7
     { r: 7, p1: "Lino", p2: "Ian Too", s1: null, s2: null },
     { r: 7, p1: "Holyplug", p2: "Manu Kheed", s1: null, s2: null },
     { r: 7, p1: "Manu Josh", p2: "Bralyn Kipkirui", s1: null, s2: null },
@@ -38,49 +33,45 @@ let fixtures = [
 ];
 
 let isAdmin = false;
-const ADMIN_PASSWORD = "EliteAdmin2026"; // CHANGE THIS TO YOUR PASSWORD
 
 function unlockAdmin() {
-    let pw = prompt("Enter Password to update scores:");
-    if (pw === ADMIN_PASSWORD) {
+    if (prompt("Admin Password:") === ADMIN_PASSWORD) {
         isAdmin = true;
         document.getElementById('saveBtn').classList.remove('hidden');
         renderFixtures();
-        alert("Logged in as Admin");
+        alert("Admin Mode Active");
     }
 }
 
 function renderFixtures() {
     const container = document.getElementById('fixtureContainer');
     container.innerHTML = '';
-    let currentRound = 0;
-
-    fixtures.forEach((f, index) => {
-        if (f.r !== currentRound) {
-            currentRound = f.r;
-            container.innerHTML += `<div class="round-header">ROUND ${currentRound}</div>`;
+    let currentR = 0;
+    fixtures.forEach((f, i) => {
+        if (f.r !== currentR) {
+            currentR = f.r;
+            container.innerHTML += `<div class="round-header">MATCH WEEK ${currentR}</div>`;
         }
         container.innerHTML += `
             <div class="match">
-                <span style="text-align:right">${f.p1}</span>
-                <div class="score-inputs">
-                    <input type="number" value="${f.s1 !== null ? f.s1 : ''}" ${!isAdmin ? 'readonly' : ''} onchange="updateScore(${index}, 's1', this.value)">
-                    <input type="number" value="${f.s2 !== null ? f.s2 : ''}" ${!isAdmin ? 'readonly' : ''} onchange="updateScore(${index}, 's2', this.value)">
+                <span class="team-name" style="text-align:right">${f.p1}</span>
+                <div class="score-box">
+                    <input type="number" value="${f.s1!==null?f.s1:''}" ${!isAdmin?'readonly':''} onchange="updateScore(${i},'s1',this.value)">
+                    <input type="number" value="${f.s2!==null?f.s2:''}" ${!isAdmin?'readonly':''} onchange="updateScore(${i},'s2',this.value)">
                 </div>
-                <span>${f.p2}</span>
+                <span class="team-name">${f.p2}</span>
             </div>`;
     });
 }
 
-function updateScore(index, key, val) {
-    fixtures[index][key] = val === "" ? null : parseInt(val);
+function updateScore(idx, key, val) {
+    fixtures[idx][key] = val === "" ? null : parseInt(val);
     calculateTable();
 }
 
 function calculateTable() {
     let stats = {};
     players.forEach(p => stats[p] = { p:0, w:0, d:0, l:0, gf:0, ga:0, gd:0, pts:0 });
-
     fixtures.forEach(f => {
         if (f.s1 !== null && f.s2 !== null) {
             stats[f.p1].p++; stats[f.p2].p++;
@@ -93,26 +84,32 @@ function calculateTable() {
             stats[f.p2].gd = stats[f.p2].gf - stats[f.p2].ga;
         }
     });
-
-    const sorted = Object.entries(stats).sort((a,b) => b[1].pts - a[1].pts || b[1].gd - a[1].gd);
+    const sorted = Object.entries(stats).sort((a,b) => b[1].pts - a[1].pts || b[1].gd - a[1].gd || b[1].gf - a[1].gf);
     const tbody = document.getElementById('tableBody');
     tbody.innerHTML = '';
     sorted.forEach((item, i) => {
         const [name, s] = item;
-        tbody.innerHTML += `<tr><td>${i+1}</td><td>${name}</td><td>${s.p}</td><td>${s.gd}</td><td style="color:#d4af37; font-weight:bold">${s.pts}</td></tr>`;
+        tbody.innerHTML += `<tr><td>${i+1}</td><td class="text-left">${name}</td><td>${s.p}</td><td>${s.w}</td><td>${s.d}</td><td>${s.l}</td><td>${s.gf}</td><td>${s.ga}</td><td>${s.gd}</td><td class="gold-pts">${s.pts}</td></tr>`;
     });
 }
 
 function saveData() {
-    // For now, this saves to your browser. 
-    // To make players see it, I'll show you how to host it on a 'Live' server.
-    localStorage.setItem('efl_scores', JSON.stringify(fixtures));
-    alert("Scores Saved! Table Updated.");
+    localStorage.setItem('efl_master_data', JSON.stringify(fixtures));
+    alert("Data saved to this device! Re-upload to GitHub for players to see.");
 }
 
-// Initialization
-const savedScores = localStorage.getItem('efl_scores');
-if (savedScores) fixtures = JSON.parse(savedScores);
+async function downloadTable() {
+    const area = document.getElementById('captureArea');
+    html2canvas(area, { backgroundColor: "#0a192f" }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'EFL-Standings-Report.png';
+        link.href = canvas.toDataURL();
+        link.click();
+    });
+}
+
+const local = localStorage.getItem('efl_master_data');
+if (local) fixtures = JSON.parse(local);
 renderFixtures();
 calculateTable();
-      
+                                                           
