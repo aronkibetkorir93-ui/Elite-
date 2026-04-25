@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EFL Season 1 | Elite League</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <img src="https://i.postimg.cc/mD86fL9D/1000059186.png" alt="EFL Logo" class="logo">
+        <h1 class="gold-text">ELITE FOOTBALL LEAGUE</h1>
+        <p>Official Season 1 Standings</p>
+        <button id="adminToggle" onclick="unlockAdmin()">Admin Login</button>
+    </header>
+
+    <main class="container">
+        <section class="card">
+            <h2>League Table</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Player</th>
+                            <th>P</th>
+                            <th>GD</th>
+                            <th>Pts</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>All Fixtures (7 Rounds)</h2>
+            <div id="fixtureContainer"></div>
+            <button id="saveBtn" class="hidden" onclick="saveData()">Update Live Results</button>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
