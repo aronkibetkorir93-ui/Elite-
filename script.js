@@ -35,11 +35,11 @@ let fixtures = [
 let isAdmin = false;
 
 function unlockAdmin() {
-    if (prompt("Admin Password:") === ADMIN_PASSWORD) {
+    if (prompt("Enter Admin Password:") === ADMIN_PASSWORD) {
         isAdmin = true;
         document.getElementById('saveBtn').classList.remove('hidden');
         renderFixtures();
-        alert("Admin Mode Active");
+        alert("Logged in!");
     }
 }
 
@@ -50,7 +50,7 @@ function renderFixtures() {
     fixtures.forEach((f, i) => {
         if (f.r !== currentR) {
             currentR = f.r;
-            container.innerHTML += `<div class="round-header">MATCH WEEK ${currentR}</div>`;
+            container.innerHTML += `<div class="round-header">ROUND ${currentR}</div>`;
         }
         container.innerHTML += `
             <div class="match">
@@ -65,51 +65,70 @@ function renderFixtures() {
 }
 
 function updateScore(idx, key, val) {
-    fixtures[idx][key] = val === "" ? null : parseInt(val);
+    fixtures[idx][key] = (val === "" || val === null) ? null : parseInt(val);
     calculateTable();
 }
 
 function calculateTable() {
     let stats = {};
     players.forEach(p => stats[p] = { p:0, w:0, d:0, l:0, gf:0, ga:0, gd:0, pts:0 });
+    
     fixtures.forEach(f => {
         if (f.s1 !== null && f.s2 !== null) {
             stats[f.p1].p++; stats[f.p2].p++;
             stats[f.p1].gf += f.s1; stats[f.p1].ga += f.s2;
             stats[f.p2].gf += f.s2; stats[f.p2].ga += f.s1;
-            if (f.s1 > f.s2) { stats[f.p1].w++; stats[f.p1].pts += 3; stats[f.p2].l++; }
-            else if (f.s1 < f.s2) { stats[f.p2].w++; stats[f.p2].pts += 3; stats[f.p1].l++; }
-            else { stats[f.p1].d++; stats[f.p2].d++; stats[f.p1].pts += 1; stats[f.p2].pts += 1; }
+            
+            if (f.s1 > f.s2) { 
+                stats[f.p1].w++; stats[f.p1].pts += 3; stats[f.p2].l++; 
+            } else if (f.s1 < f.s2) { 
+                stats[f.p2].w++; stats[f.p2].pts += 3; stats[f.p1].l++; 
+            } else { 
+                stats[f.p1].d++; stats[f.p2].d++; stats[f.p1].pts += 1; stats[f.p2].pts += 1; 
+            }
             stats[f.p1].gd = stats[f.p1].gf - stats[f.p1].ga;
             stats[f.p2].gd = stats[f.p2].gf - stats[f.p2].ga;
         }
     });
+
     const sorted = Object.entries(stats).sort((a,b) => b[1].pts - a[1].pts || b[1].gd - a[1].gd || b[1].gf - a[1].gf);
     const tbody = document.getElementById('tableBody');
     tbody.innerHTML = '';
+    
     sorted.forEach((item, i) => {
         const [name, s] = item;
-        tbody.innerHTML += `<tr><td>${i+1}</td><td class="text-left">${name}</td><td>${s.p}</td><td>${s.w}</td><td>${s.d}</td><td>${s.l}</td><td>${s.gf}</td><td>${s.ga}</td><td>${s.gd}</td><td class="gold-pts">${s.pts}</td></tr>`;
+        tbody.innerHTML += `
+            <tr>
+                <td class="col-rank">${i+1}</td>
+                <td class="col-name text-left">${name}</td>
+                <td class="col-stat">${s.p}</td>
+                <td class="col-stat">${s.w}</td>
+                <td class="col-stat">${s.d}</td>
+                <td class="col-stat">${s.l}</td>
+                <td class="col-stat">${s.gf}</td>
+                <td class="col-stat">${s.ga}</td>
+                <td class="col-stat">${s.gd}</td>
+                <td class="col-stat gold-pts">${s.pts}</td>
+            </tr>`;
     });
 }
 
 function saveData() {
-    localStorage.setItem('efl_master_data', JSON.stringify(fixtures));
-    alert("Data saved to this device! Re-upload to GitHub for players to see.");
+    localStorage.setItem('efl_final_v1', JSON.stringify(fixtures));
+    alert("Scores Saved! Now just Push this script.js to GitHub for players to see.");
 }
 
-async function downloadTable() {
+function downloadTable() {
     const area = document.getElementById('captureArea');
-    html2canvas(area, { backgroundColor: "#0a192f" }).then(canvas => {
+    html2canvas(area, { backgroundColor: "#0a192f", scale: 2 }).then(canvas => {
         const link = document.createElement('a');
-        link.download = 'EFL-Standings-Report.png';
+        link.download = 'EFL-Standings.png';
         link.href = canvas.toDataURL();
         link.click();
     });
 }
 
-const local = localStorage.getItem('efl_master_data');
-if (local) fixtures = JSON.parse(local);
+const saved = localStorage.getItem('efl_final_v1');
+if (saved) fixtures = JSON.parse(saved);
 renderFixtures();
 calculateTable();
-                                                           
